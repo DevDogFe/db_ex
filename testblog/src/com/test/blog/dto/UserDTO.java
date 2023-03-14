@@ -1,4 +1,4 @@
-package com.tenco.myblog.dto;
+package com.test.blog.dto;
 
 public class UserDTO {
 
@@ -10,11 +10,23 @@ public class UserDTO {
 	private String userRole;
 	private String createDate;
 	
+	// 회원정보 수정 용도
+	public UserDTO(String password, String email, String address) {
+		this.password = password;
+		this.email = email;
+		this.address = address;
+	}
+	// 회원가입 용도
+	public UserDTO(String username, String password, String email, String address) {
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.address = address;
+	}
 	
-	
+	// 로그인하면서 정보 담는 용도
 	public UserDTO(int id, String username, String password, String email, String address, String userRole,
 			String createDate) {
-		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -79,5 +91,13 @@ public class UserDTO {
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
+
+	@Override
+	public String toString() {
+		return "UserDTO [아이디: " + username + ", email: " + email + ", 주소: " + address + ", 가입일: "
+				+ createDate + "]";
+	}
+	
+	
 
 } // end of class

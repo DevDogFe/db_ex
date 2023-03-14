@@ -1,4 +1,4 @@
-package com.tenco.myblog.dto;
+package com.test.blog.dto;
 
 public class BlogDTO {
 

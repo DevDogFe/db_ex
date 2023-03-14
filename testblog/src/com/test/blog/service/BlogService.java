@@ -1,10 +1,10 @@
-package com.tenco.myblog.service;
+package com.test.blog.service;
 
 import java.util.ArrayList;
 
-import com.tenco.myblog.dao.BlogDAO;
-import com.tenco.myblog.dao.IBlogDAO;
-import com.tenco.myblog.dto.BlogDTO;
+import com.test.blog.dao.BlogDAO;
+import com.test.blog.dao.IBlogDAO;
+import com.test.blog.dto.BlogDTO;
 
 public class BlogService {
 

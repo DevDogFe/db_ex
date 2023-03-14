@@ -1,9 +1,9 @@
-package com.tenco.myblog.controller;
+package com.test.blog.controller;
 
 import java.util.ArrayList;
 
-import com.tenco.myblog.dto.BlogDTO;
-import com.tenco.myblog.service.BlogService;
+import com.test.blog.dto.BlogDTO;
+import com.test.blog.service.BlogService;
 
 public class BlogController {
 	

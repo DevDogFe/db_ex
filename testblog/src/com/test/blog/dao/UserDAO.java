@@ -1,12 +1,12 @@
-package com.tenco.myblog.dao;
+package com.test.blog.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.tenco.myblog.dto.UserDTO;
-import com.tenco.myblog.utils.DBHelper;
+import com.test.blog.dto.UserDTO;
+import com.test.blog.utils.DBHelper;
 
 public class UserDAO implements IUserDAO {
 
@@ -17,18 +17,19 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public int create(UserDTO userDTO) {
 		int resultRow = 0;
-		String sql = " INSERT INTO user(username, password, email, address, userRole, createDate) VALUES\r\n"
+		String sql = " INSERT INTO user(username, password, email, address, userRole, createDate) VALUES "
 				+ " (?, ?, ?, ?, ?, now()); ";
 		conn = DBHelper.getInstance().getConnection();
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, sql);
-			pstmt.setString(2, sql);
-			pstmt.setString(3, sql);
-			pstmt.setString(4, sql);
-			pstmt.setString(5, sql);
+			pstmt.setString(1, userDTO.getUsername());
+			pstmt.setString(2, userDTO.getPassword());
+			pstmt.setString(3, userDTO.getEmail());
+			pstmt.setString(4, userDTO.getAddress());
+			pstmt.setString(5, userDTO.getUserRole());
 			resultRow = pstmt.executeUpdate();
 		} catch (SQLException e) {
+			System.out.println("회원가입 실패");
 			e.printStackTrace();
 		} finally {
 			try {
@@ -40,13 +41,14 @@ public class UserDAO implements IUserDAO {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("회원가입에 성공하였습니다.");
 		return resultRow;
 	}
 
 	@Override
 	public int update(int id, UserDTO userDTO) {
 		int resultRow = 0;
-		String sql = " UPDATE board SET password = ?, email = ?, address = ? " + " WHERE id = ? ";
+		String sql = " UPDATE user SET password = ?, email = ?, address = ? " + " WHERE id = ? ";
 		conn = DBHelper.getInstance().getConnection();
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -81,9 +83,9 @@ public class UserDAO implements IUserDAO {
 			pstmt.setString(2, password);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				userDTO = new UserDTO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
-						rs.getString(6), rs.getString(7));
-
+				userDTO = new UserDTO(rs.getInt("id"), rs.getString("username"), rs.getString("password"),
+						rs.getString("email"), rs.getString("address"), rs.getString("userRole"), rs.getString("createDate"));
+				System.out.println(rs.getInt("id"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

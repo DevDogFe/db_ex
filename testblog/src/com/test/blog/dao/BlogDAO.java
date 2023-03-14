@@ -1,4 +1,4 @@
-package com.tenco.myblog.dao;
+package com.test.blog.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.tenco.myblog.dto.BlogDTO;
-import com.tenco.myblog.utils.DBHelper;
+import com.test.blog.dto.BlogDTO;
+import com.test.blog.utils.DBHelper;
 
 public class BlogDAO implements IBlogDAO {
 
