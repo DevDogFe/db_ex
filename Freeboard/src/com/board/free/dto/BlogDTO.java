@@ -1,4 +1,4 @@
-package com.test.blog.dto;
+package com.board.free.dto;
 
 public class BlogDTO {
 
@@ -7,7 +7,10 @@ public class BlogDTO {
 	private String content;
 	private int readCount;
 	private int userId;
-	
+
+	public BlogDTO() {
+
+	}
 	// write, update 용도
 	public BlogDTO(String title, String content) {
 		this.title = title;
