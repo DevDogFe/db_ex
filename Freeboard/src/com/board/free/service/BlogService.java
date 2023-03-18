@@ -15,9 +15,9 @@ public class BlogService {
 		blogDAO = new BlogDAO();
 	}
 
-	public ArrayList<BlogListDTO> selectAll() {
+	public ArrayList<BlogListDTO> selectAll(int offset) {
 
-		ArrayList<BlogListDTO> list = blogDAO.select();
+		ArrayList<BlogListDTO> list = blogDAO.selectAll(offset);
 
 		return list;
 	}

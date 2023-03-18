@@ -1,6 +1,8 @@
 package com.board.free.frames.boards;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import javax.swing.JTable;
 
 import com.board.free.controller.BlogController;
 import com.board.free.controller.UserController;
+import com.board.free.dao.BlogDAO;
 import com.board.free.dto.BlogDTO;
 import com.board.free.dto.BlogListDTO;
 import com.board.free.dto.UserDTO;
@@ -31,6 +34,8 @@ public class BoardTable extends JPanel {
 	private MouseListener listener;
 	private JButton prev;
 	private JButton next;
+	private int offset;
+	private int rowCount;
 
 	public ArrayList<BlogListDTO> getList() {
 		return list;
@@ -105,6 +110,7 @@ public class BoardTable extends JPanel {
 		this.user = user;
 		initData();
 		setInitLayout();
+		addEventListener();
 	}
 
 	private void initData() {
@@ -119,6 +125,7 @@ public class BoardTable extends JPanel {
 		}
 		prev = new JButton("이전");
 		next = new JButton("다음");
+		offset = 0;
 	}
 
 	private void setInitLayout() {
@@ -147,23 +154,76 @@ public class BoardTable extends JPanel {
 			ids[i].setSize(100, 20);
 			titles[i].setSize(500, 20);
 			readCounts[i].setSize(100, 20);
-			writers[i].setSize(300, 20);
+			writers[i].setSize(200, 20);
 			ids[i].setLocation(100, 100 + i * 30);
 			titles[i].setLocation(300, 100 + i * 30);
 			readCounts[i].setLocation(800, 100 + i * 30);
-			writers[i].setLocation(1000, 100 + i * 30);
-			ids[i].setText(list.get(i).getId() + "");
-			titles[i].setText(list.get(i).getTitle());
-			readCounts[i].setText(list.get(i).getReadCount() + "");
-			writers[i].setText(list.get(i).getUsername());
+			writers[i].setLocation(900, 100 + i * 30);
+			if(i<list.size()) {
+				ids[i].setText(list.get(i).getId() + "");
+				titles[i].setText(list.get(i).getTitle());
+				readCounts[i].setText(list.get(i).getReadCount() + "");
+				writers[i].setText(list.get(i).getUsername());
+			}
 		}
 		add(prev);
-		prev.setLocation(450, 720);
+		prev.setLocation(1100, 600);
 		prev.setSize(80, 30);
 		add(next);
-		next.setLocation(550, 720);
+		next.setLocation(1100, 650);
 		next.setSize(80, 30);
 		setVisible(true);
+	}
+	
+	private void addEventListener() {
+		prev.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(offset >= 20) {
+					offset -= 20;
+					list = new BlogController().requestBoardAll(offset);
+					for (int i = 0; i < LIST_ROWS; i++) {
+						if(i<list.size()) {
+							ids[i].setText(list.get(i).getId() + "");
+							titles[i].setText(list.get(i).getTitle());
+							readCounts[i].setText(list.get(i).getReadCount() + "");
+							writers[i].setText(list.get(i).getUsername());
+						}
+					}
+				}
+				repaint();
+			}
+		});
+		
+		next.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				rowCount = new BlogDAO().rowCount();
+				if(offset + 20 < rowCount) {
+					offset += 20;
+					list = new BlogController().requestBoardAll(offset);
+					for (int i = 0; i < LIST_ROWS; i++) {
+						if(i<list.size()) {
+							ids[i].setText(list.get(i).getId() + "");
+							titles[i].setText(list.get(i).getTitle());
+							readCounts[i].setText(list.get(i).getReadCount() + "");
+							writers[i].setText(list.get(i).getUsername());
+						} else {
+							ids[i].setText("");
+							titles[i].setText("");
+							readCounts[i].setText("");
+							writers[i].setText("");
+						}
+					}
+				}
+				for (BlogListDTO a : list) {
+					System.out.println(a);
+				}
+				repaint();
+			}
+		});
 	}
 
 	public static void main(String[] args) {

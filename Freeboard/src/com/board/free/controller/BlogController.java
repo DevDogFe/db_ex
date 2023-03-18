@@ -14,8 +14,8 @@ public class BlogController {
 		blogService = new BlogService();
 	}
 	
-	public ArrayList<BlogListDTO> requestBoardAll(){
-		ArrayList<BlogListDTO> list = blogService.selectAll();
+	public ArrayList<BlogListDTO> requestBoardAll(int offset){
+		ArrayList<BlogListDTO> list = blogService.selectAll(offset);
 		
 		return list;
 	}

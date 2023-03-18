@@ -58,7 +58,7 @@ public class BoardFrame extends JFrame{
 		header.setSize(1500, 80);
 		body = new JPanel();
 		body.setSize(1500, 920);
-		list = new BlogController().requestBoardAll();
+		list = new BlogController().requestBoardAll(0);
 		boardTable = new BoardTable(user, list);
 		title = new JLabel();
 		writePanel = new JPanel();
@@ -92,7 +92,7 @@ public class BoardFrame extends JFrame{
 		body.setLocation(0, 80);
 		body.setBackground(Color.LIGHT_GRAY);
 		body.add(writePanel);
-		writePanel.setLocation(1000, 710);
+		writePanel.setLocation(1300, 210);
 		writePanel.setSize(150, 50);
 		writePanel.setBackground(Color.DARK_GRAY);
 		writePanel.add(write, BorderLayout.CENTER);

@@ -25,8 +25,8 @@ import com.board.free.frames.boards.BoardFrame;
 import com.board.free.frames.boards.BoardTable;
 import com.board.free.frames.update.UpdateFrame;
 
-public class ReadFrame extends JFrame{
-	
+public class ReadFrame extends JFrame {
+
 	private UserDTO userDTO;
 	private BlogDTO blogDTO;
 	private JPanel logout;
@@ -36,8 +36,7 @@ public class ReadFrame extends JFrame{
 	private ReadContent readContent;
 	private JLabel title;
 	private JButton back;
-	private JButton update;
-	
+
 	public ReadFrame(UserDTO userDTO, BlogDTO blogDTO) {
 		this.userDTO = userDTO;
 		this.blogDTO = blogDTO;
@@ -45,7 +44,7 @@ public class ReadFrame extends JFrame{
 		setInitLayout();
 		addEventListener();
 	}
-	
+
 	private void initData() {
 		setTitle(blogDTO.getTitle());
 		setSize(1500, 1000);
@@ -65,10 +64,9 @@ public class ReadFrame extends JFrame{
 		back = new JButton("뒤로가기");
 		back.setSize(150, 50);
 		readContent = new ReadContent(blogDTO);
-		
-		
+
 	}
-	
+
 	private void setInitLayout() {
 		setLayout(null);
 		header.setLayout(null);
@@ -95,11 +93,11 @@ public class ReadFrame extends JFrame{
 		body.setLocation(0, 80);
 		body.setBackground(Color.LIGHT_GRAY);
 		body.add(readContent);
-		
+
 		setVisible(true);
-		
+
 	}
-	
+
 	private void addEventListener() {
 		logout.addMouseListener(new MouseAdapter() {
 			@Override
@@ -117,24 +115,41 @@ public class ReadFrame extends JFrame{
 				super.mouseReleased(e);
 			}
 		});
-		
+
 		readContent.getUpdate().addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(userDTO.getId() == blogDTO.getUserId()) {
+				if (userDTO.getId() == blogDTO.getUserId()) {
 					new UpdateFrame(userDTO, blogDTO);
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "수정 권한이 없습니다.");
 				}
-				
+
+			}
+		});
+
+		readContent.getDelete().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (userDTO.getId() == blogDTO.getUserId()) {
+
+					int deleteCheck = JOptionPane.showConfirmDialog(null, "정말로 삭제하시겠습니까?");
+					if (deleteCheck == JOptionPane.YES_OPTION) {
+						new BlogController().requestDeleteBoardById(blogDTO.getId(), userDTO.getId());
+						new BoardFrame(userDTO);
+						dispose();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "삭제 권한이 없습니다.");
+				}
 			}
 		});
 	}
-	
+
 	public static void main(String[] args) {
 	}
-	
-	
+
 }

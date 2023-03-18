@@ -13,6 +13,7 @@ import javax.swing.JTextArea;
 
 import com.board.free.controller.BlogController;
 import com.board.free.controller.UserController;
+import com.board.free.dao.BlogDAO;
 import com.board.free.dao.UserDAO;
 import com.board.free.dto.BlogDTO;
 import com.board.free.dto.BlogListDTO;
@@ -26,7 +27,16 @@ public class ReadContent extends JPanel {
 	private UserDTO contentWriter;
 	private JTextArea contents;
 	private JButton update;
-	
+	private JButton delete;
+
+	public JButton getDelete() {
+		return delete;
+	}
+
+	public void setDelete(JButton delete) {
+		this.delete = delete;
+	}
+
 	public JButton getUpdate() {
 		return update;
 	}
@@ -37,7 +47,7 @@ public class ReadContent extends JPanel {
 
 	public ReadContent(BlogDTO blogDTO) {
 		this.blogDTO = blogDTO;
-		contentWriter = new UserDAO().searchUserById(this.blogDTO.getUserId()); 
+		contentWriter = new UserDAO().searchUserById(this.blogDTO.getUserId());
 		initData();
 		setInitLayout();
 	}
@@ -49,6 +59,7 @@ public class ReadContent extends JPanel {
 		writer = new JLabel();
 		contents = new JTextArea();
 		update = new JButton("수정하기");
+		delete = new JButton("글 삭제");
 	}
 
 	private void setInitLayout() {
@@ -67,16 +78,23 @@ public class ReadContent extends JPanel {
 		contents.setSize(900, 600);
 		contents.setLocation(50, 100);
 		contents.setEditable(false);
-		contents.setText("\n" +blogDTO.getContent());
+		contents.setText("\n" + blogDTO.getContent());
 		add(update);
 		update.setSize(150, 50);
-		update.setLocation(425, 720);
+		update.setLocation(950, 420);
 		update.setFont(new Font("monospaced", Font.LAYOUT_LEFT_TO_RIGHT, 15));
+		add(delete);
+		delete.setSize(150, 50);
+		delete.setLocation(950, 520);
+		delete.setFont(new Font("monospaced", Font.LAYOUT_LEFT_TO_RIGHT, 15));
 
 		setVisible(true);
 	}
 
 	public static void main(String[] args) {
+		UserDTO dto = new UserDAO().searchUserById(1);
+		BlogDTO dto2 = new BlogDAO().select(2);
+		new ReadFrame(dto, dto2);
 	}
 
 }
