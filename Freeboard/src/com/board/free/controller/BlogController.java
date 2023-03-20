@@ -20,6 +20,12 @@ public class BlogController {
 		return list;
 	}
 	
+	public ArrayList<BlogListDTO> requestBoardByUserId(int userId, int offset){
+		ArrayList<BlogListDTO> list = blogService.selectByUserId(userId, offset);
+		
+		return list;
+	}
+	
 	public BlogDTO requestBoardContentById(int id, int userId) {
 		BlogDTO blogDTO = null;
 		blogDTO = blogService.selectByBoardId(id, userId);
@@ -27,14 +33,14 @@ public class BlogController {
 		return blogDTO;
 	}
 	
-	public int requestDeleteBoardById(int id, int userId) {
+	public int requestDeleteBoardContentById(int id, int userId) {
 		int resultRow = 0;
 		resultRow = blogService.deleteBoardByID(id, userId);
 		
 		return resultRow;
 	}
 	
-	public int requestWriteBoardByUserId(BlogDTO blogDTO, int userId) {
+	public int requestWriteBoardContentByUserId(BlogDTO blogDTO, int userId) {
 		int resultRow = 0;
 		resultRow = blogService.writeBoardByUserId(blogDTO, userId);
 		System.out.println("리퀘스트 성공");

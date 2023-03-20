@@ -8,10 +8,12 @@ import com.board.free.dto.BlogListDTO;
 public interface IBlogDAO {
 
 	ArrayList<BlogListDTO> selectAll(int offset);
+	ArrayList<BlogListDTO> selectByUser(int userId, int offset);
 	BlogDTO select(int id);
 	int delete(int id);
 	int write(BlogDTO blogDTO, int userId);
 	int update(BlogDTO blogDTO, int id);
 	int readCountUp(BlogDTO blogDTO);
 	int rowCount();
+	int rowCount(int userId);
 }

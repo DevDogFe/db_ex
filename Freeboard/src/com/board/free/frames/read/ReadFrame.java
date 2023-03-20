@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import com.board.free.controller.BlogController;
 import com.board.free.controller.UserController;
@@ -23,6 +24,7 @@ import com.board.free.dto.UserDTO;
 import com.board.free.frames.LoginFrame;
 import com.board.free.frames.boards.BoardFrame;
 import com.board.free.frames.boards.BoardTable;
+import com.board.free.frames.boards.UserInfoFrame;
 import com.board.free.frames.update.UpdateFrame;
 
 public class ReadFrame extends JFrame {
@@ -36,6 +38,8 @@ public class ReadFrame extends JFrame {
 	private ReadContent readContent;
 	private JLabel title;
 	private JButton back;
+	private ReadFrame mContext = this;
+
 
 	public ReadFrame(UserDTO userDTO, BlogDTO blogDTO) {
 		this.userDTO = userDTO;
@@ -138,13 +142,21 @@ public class ReadFrame extends JFrame {
 
 					int deleteCheck = JOptionPane.showConfirmDialog(null, "정말로 삭제하시겠습니까?");
 					if (deleteCheck == JOptionPane.YES_OPTION) {
-						new BlogController().requestDeleteBoardById(blogDTO.getId(), userDTO.getId());
+						new BlogController().requestDeleteBoardContentById(blogDTO.getId(), userDTO.getId());
 						new BoardFrame(userDTO);
 						dispose();
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "삭제 권한이 없습니다.");
 				}
+			}
+		});
+		
+		readContent.getWriter().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				new UserInfoFrame(userDTO, blogDTO.getUserId(), getMousePosition().x, getMousePosition().y, mContext);
+				super.mouseReleased(e);
 			}
 		});
 	}

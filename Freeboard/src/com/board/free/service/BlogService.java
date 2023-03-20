@@ -21,6 +21,13 @@ public class BlogService {
 
 		return list;
 	}
+	
+	public ArrayList<BlogListDTO> selectByUserId(int userId, int offset) {
+		
+		ArrayList<BlogListDTO> list = blogDAO.selectByUser(userId, offset);
+		
+		return list;
+	}
 
 	public BlogDTO selectByBoardId(int id, int userId) {
 		BlogDTO blogDTO = null;

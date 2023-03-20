@@ -53,6 +53,44 @@ public class BlogDAO implements IBlogDAO {
 	}
 
 	@Override
+	public ArrayList<BlogListDTO> selectByUser(int userId, int offset) {
+		ArrayList<BlogListDTO> list = new ArrayList<>();
+
+		String query = " SELECT b.id, b.title, b.readCount, b.userId, u.username " + "FROM board AS b "
+				+ "LEFT JOIN user AS u " + "ON b.userId = u.id " + "WHERE b.userId = ? " + "ORDER BY b.id desc "
+				+ "LIMIT 20 OFFSET ? ";
+		conn = DBHelper.getInstance().getConnection();
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, userId);
+			pstmt.setInt(2, offset);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				BlogListDTO blogListDTO = new BlogListDTO(rs.getInt("id"), rs.getString("title"),
+						rs.getInt("readCount"), rs.getInt("userId"), rs.getString("username"));
+				list.add(blogListDTO);
+			}
+		} catch (SQLException e) {
+			System.out.println(">> BlogDAO select() error <<");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				DBHelper.closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return list;
+	}
+
+	@Override
 	public BlogDTO select(int id) {
 		BlogDTO blogDTO = null;
 		String query = " SELECT * FROM board " + " WHERE id = ?; ";
@@ -205,6 +243,36 @@ public class BlogDAO implements IBlogDAO {
 		conn = DBHelper.getInstance().getConnection();
 		try {
 			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				rowCount = rs.getInt("count(id)");
+			}
+		} catch (SQLException e) {
+			System.out.println(">> BlogDAO select() error <<");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				DBHelper.closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return rowCount;
+	}
+	
+	@Override
+	public int rowCount(int userId) {
+		int rowCount = 0;
+		String query = " SELECT count(id) FROM board WHERE userId = ?; ";
+		conn = DBHelper.getInstance().getConnection();
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, userId);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				rowCount = rs.getInt("count(id)");

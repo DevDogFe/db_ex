@@ -22,7 +22,7 @@ import com.board.free.frames.LoginFrame;
 import com.board.free.frames.read.ReadFrame;
 import com.board.free.frames.write.WriteFrame;
 
-public class BoardFrame extends JFrame{
+public class SearchedBoardFrame extends JFrame{
 	
 	private UserDTO user;
 	private JPanel usernamePanel;
@@ -36,10 +36,14 @@ public class BoardFrame extends JFrame{
 	private JLabel title;
 	private JLabel write;
 	private JPanel writePanel;
-	private BoardFrame mContext = this;
+	private JLabel main;
+	private JPanel mainPanel;
+	private SearchedBoardFrame mContext = this;
+	private int userId;
 	
-	public BoardFrame(UserDTO userDTO) {
+	public SearchedBoardFrame(UserDTO userDTO, int userId) {
 		this.user = userDTO;
+		this.userId = userId;
 		initData();
 		setInitLayout();
 		addEventListener();
@@ -59,11 +63,13 @@ public class BoardFrame extends JFrame{
 		header.setSize(1500, 80);
 		body = new JPanel();
 		body.setSize(1500, 920);
-		list = new BlogController().requestBoardAll(0);
+		list = new BlogController().requestBoardByUserId(userId, 0);
 		boardTable = new BoardTable(user, list);
 		title = new JLabel();
 		writePanel = new JPanel();
 		write = new JLabel();
+		mainPanel = new JPanel();
+		main = new JLabel();
 		usernamePanel = new JPanel();
 		username = new JLabel();
 		
@@ -102,12 +108,20 @@ public class BoardFrame extends JFrame{
 		body.setBackground(Color.LIGHT_GRAY);
 		body.add(writePanel);
 		writePanel.setLocation(1200, 100);
-		writePanel.setSize(150, 50);
+		writePanel.setSize(200, 50);
 		writePanel.setBackground(Color.DARK_GRAY);
 		writePanel.add(write, BorderLayout.CENTER);
 		write.setText("글쓰기");
 		write.setFont(new Font("monospaced", Font.BOLD, 30));
 		write.setForeground(Color.white);
+		body.add(mainPanel);
+		mainPanel.setLocation(1200, 200);
+		mainPanel.setSize(200, 50);
+		mainPanel.setBackground(Color.DARK_GRAY);
+		mainPanel.add(main, BorderLayout.CENTER);
+		main.setText("전체글보기");
+		main.setFont(new Font("monospaced", Font.BOLD, 30));
+		main.setForeground(Color.white);
 		body.add(boardTable);
 		setVisible(true);
 		
@@ -135,6 +149,14 @@ public class BoardFrame extends JFrame{
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				new UserInfoFrame(user, user.getId(), getMousePosition().x, getMousePosition().y, mContext);
+				super.mouseReleased(e);
+			}
+		});
+		
+		mainPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				new BoardFrame(user);
 				super.mouseReleased(e);
 			}
 		});
@@ -345,7 +367,7 @@ public class BoardFrame extends JFrame{
 	
 	public static void main(String[] args) {
 		UserDTO dto = new UserController().requestSignIn("홍길동", "1234");
-		new BoardFrame(dto);
+		new SearchedBoardFrame(dto, 1);
 	}
 	
 	

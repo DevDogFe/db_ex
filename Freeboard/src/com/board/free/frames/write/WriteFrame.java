@@ -98,7 +98,7 @@ public class WriteFrame extends JFrame{
 				String titleText = writeContent.getTitleField().getText(); 
 				String ContentText = writeContent.getContents().getText();
 				if(titleText != "") {
-					resultRow = new BlogController().requestWriteBoardByUserId(new BlogDTO(titleText, ContentText), user.getId());
+					resultRow = new BlogController().requestWriteBoardContentByUserId(new BlogDTO(titleText, ContentText), user.getId());
 					System.out.println("성공");
 				} else {
 					JOptionPane.showMessageDialog(null, "글 등록 실패\n제목을 입력해주세요.");

@@ -28,6 +28,14 @@ public class ReadContent extends JPanel {
 	private JTextArea contents;
 	private JButton update;
 	private JButton delete;
+	
+	public JLabel getWriter() {
+		return writer;
+	}
+
+	public void setWriter(JLabel writer) {
+		this.writer = writer;
+	}
 
 	public JButton getDelete() {
 		return delete;
@@ -81,11 +89,11 @@ public class ReadContent extends JPanel {
 		contents.setText("\n" + blogDTO.getContent());
 		add(update);
 		update.setSize(150, 50);
-		update.setLocation(950, 420);
+		update.setLocation(300, 720);
 		update.setFont(new Font("monospaced", Font.LAYOUT_LEFT_TO_RIGHT, 15));
 		add(delete);
 		delete.setSize(150, 50);
-		delete.setLocation(950, 520);
+		delete.setLocation(525, 720);
 		delete.setFont(new Font("monospaced", Font.LAYOUT_LEFT_TO_RIGHT, 15));
 
 		setVisible(true);

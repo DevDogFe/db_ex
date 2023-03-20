@@ -36,6 +36,7 @@ public class BoardTable extends JPanel {
 	private JButton next;
 	private int offset;
 	private int rowCount;
+	private int userId = -1;
 
 	public ArrayList<BlogListDTO> getList() {
 		return list;
@@ -112,6 +113,13 @@ public class BoardTable extends JPanel {
 		setInitLayout();
 		addEventListener();
 	}
+	public BoardTable(UserDTO user, ArrayList<BlogListDTO> list, int userId) {
+		this.list = list;
+		this.user = user;
+		initData();
+		setInitLayout();
+		addEventListener();
+	}
 
 	private void initData() {
 		for (int i = 0; i < headers.length; i++) {
@@ -129,7 +137,7 @@ public class BoardTable extends JPanel {
 	}
 
 	private void setInitLayout() {
-		setSize(1200, 800);
+		setSize(1000, 800);
 		setLocation(100, 10);
 		setBackground(Color.LIGHT_GRAY);
 		setLayout(null);
@@ -140,7 +148,7 @@ public class BoardTable extends JPanel {
 		headers[0].setLocation(100, 50);
 		headers[1].setLocation(300, 50);
 		headers[2].setLocation(800, 50);
-		headers[3].setLocation(1000, 50);
+		headers[3].setLocation(900, 50);
 		headers[0].setText("글번호");
 		headers[1].setText("제  목");
 		headers[2].setText("조회수");
@@ -157,7 +165,7 @@ public class BoardTable extends JPanel {
 			writers[i].setSize(200, 20);
 			ids[i].setLocation(100, 100 + i * 30);
 			titles[i].setLocation(300, 100 + i * 30);
-			readCounts[i].setLocation(800, 100 + i * 30);
+			readCounts[i].setLocation(815, 100 + i * 30);
 			writers[i].setLocation(900, 100 + i * 30);
 			if(i<list.size()) {
 				ids[i].setText(list.get(i).getId() + "");
@@ -167,10 +175,10 @@ public class BoardTable extends JPanel {
 			}
 		}
 		add(prev);
-		prev.setLocation(1100, 600);
+		prev.setLocation(450, 750);
 		prev.setSize(80, 30);
 		add(next);
-		next.setLocation(1100, 650);
+		next.setLocation(550, 750);
 		next.setSize(80, 30);
 		setVisible(true);
 	}
@@ -180,9 +188,21 @@ public class BoardTable extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(offset >= 20) {
+				if(offset >= 20 && userId == -1) {
 					offset -= 20;
 					list = new BlogController().requestBoardAll(offset);
+					for (int i = 0; i < LIST_ROWS; i++) {
+						if(i<list.size()) {
+							ids[i].setText(list.get(i).getId() + "");
+							titles[i].setText(list.get(i).getTitle());
+							readCounts[i].setText(list.get(i).getReadCount() + "");
+							writers[i].setText(list.get(i).getUsername());
+						}
+					}
+				}
+				if(offset >= 20 && userId != -1) {
+					offset -= 20;
+					list = new BlogController().requestBoardByUserId(userId, offset);
 					for (int i = 0; i < LIST_ROWS; i++) {
 						if(i<list.size()) {
 							ids[i].setText(list.get(i).getId() + "");
@@ -201,7 +221,7 @@ public class BoardTable extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				rowCount = new BlogDAO().rowCount();
-				if(offset + 20 < rowCount) {
+				if(offset + 20 < rowCount && userId == -1) {
 					offset += 20;
 					list = new BlogController().requestBoardAll(offset);
 					for (int i = 0; i < LIST_ROWS; i++) {
@@ -218,8 +238,23 @@ public class BoardTable extends JPanel {
 						}
 					}
 				}
-				for (BlogListDTO a : list) {
-					System.out.println(a);
+				if(offset + 20 < rowCount && userId != -1) {
+					rowCount = new BlogDAO().rowCount(userId);
+					offset += 20;
+					list = new BlogController().requestBoardByUserId(userId, offset);
+					for (int i = 0; i < LIST_ROWS; i++) {
+						if(i<list.size()) {
+							ids[i].setText(list.get(i).getId() + "");
+							titles[i].setText(list.get(i).getTitle());
+							readCounts[i].setText(list.get(i).getReadCount() + "");
+							writers[i].setText(list.get(i).getUsername());
+						} else {
+							ids[i].setText("");
+							titles[i].setText("");
+							readCounts[i].setText("");
+							writers[i].setText("");
+						}
+					}
 				}
 				repaint();
 			}
