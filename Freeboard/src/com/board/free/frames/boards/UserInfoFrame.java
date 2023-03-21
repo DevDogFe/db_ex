@@ -35,15 +35,17 @@ public class UserInfoFrame extends JFrame {
 		addEventListener();
 		setLocation(x, y);
 	}
+
 	public UserInfoFrame(UserDTO user, int userId, int x, int y, BoardFrame boardFrame) {
 		this.user = user;
 		this.showedUser = new UserDAO().searchUserById(userId);
 		this.parentFrame = boardFrame;
 		initData();
 		setInitLayout();
+		addEventListener();
 		setLocation(x, y);
 	}
-	
+
 	private void initData() {
 		setSize(300, 300);
 		setBackground(Color.YELLOW);
@@ -58,7 +60,7 @@ public class UserInfoFrame extends JFrame {
 		dateLabel = new JLabel();
 		usersBlog = new JLabel();
 	}
-	
+
 	private void setInitLayout() {
 		add(head);
 		add(body);
@@ -81,7 +83,7 @@ public class UserInfoFrame extends JFrame {
 		dateLabel.setText("계정 생성일: " + showedUser.getCreateDate());
 		dateLabel.setSize(450, 20);
 		dateLabel.setLocation(50, 80);
-		if(user.getId() == showedUser.getId()) {
+		if (user.getId() == showedUser.getId()) {
 			titleLabel.setText("내 정보");
 			usersBlog.setText("내 글 보러가기");
 		} else {
@@ -92,15 +94,16 @@ public class UserInfoFrame extends JFrame {
 		usersBlog.setLocation(50, 150);
 		usersBlog.setForeground(Color.BLUE);
 		titleLabel.setFont(new Font("monospaced", Font.CENTER_BASELINE, 25));
-		
+
 		setVisible(true);
 	}
-	
+
 	private void addEventListener() {
 		usersBlog.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if(parentFrame != null) {
+				System.out.println("클릭");
+				if (parentFrame != null) {
 					parentFrame.dispose();
 				}
 				new SearchedBoardFrame(user, showedUser.getId());
@@ -109,11 +112,6 @@ public class UserInfoFrame extends JFrame {
 			}
 		});
 
-	}
-	
-	public static void main(String[] args) {
-		
-		UserDTO dto = new UserDAO().searchUserById(1);
 	}
 
 }

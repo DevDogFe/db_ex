@@ -110,7 +110,6 @@ public class BoardFrame extends JFrame{
 		write.setForeground(Color.white);
 		body.add(boardTable);
 		setVisible(true);
-		
 	}
 	
 	private void addEventListener() {
@@ -134,6 +133,7 @@ public class BoardFrame extends JFrame{
 		usernamePanel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				System.out.println(user.getId());
 				new UserInfoFrame(user, user.getId(), getMousePosition().x, getMousePosition().y, mContext);
 				super.mouseReleased(e);
 			}

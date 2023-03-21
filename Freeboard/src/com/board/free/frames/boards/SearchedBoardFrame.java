@@ -39,11 +39,11 @@ public class SearchedBoardFrame extends JFrame{
 	private JLabel main;
 	private JPanel mainPanel;
 	private SearchedBoardFrame mContext = this;
-	private int userId;
+	private int searchedUserId;
 	
 	public SearchedBoardFrame(UserDTO userDTO, int userId) {
 		this.user = userDTO;
-		this.userId = userId;
+		searchedUserId = userId;
 		initData();
 		setInitLayout();
 		addEventListener();
@@ -63,7 +63,7 @@ public class SearchedBoardFrame extends JFrame{
 		header.setSize(1500, 80);
 		body = new JPanel();
 		body.setSize(1500, 920);
-		list = new BlogController().requestBoardByUserId(userId, 0);
+		list = new BlogController().requestBoardByUserId(searchedUserId, 0);
 		boardTable = new BoardTable(user, list);
 		title = new JLabel();
 		writePanel = new JPanel();
